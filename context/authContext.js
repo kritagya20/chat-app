@@ -1,6 +1,8 @@
 import { useState, useEffect, createContext, useContext } from "react";
 import { onAuthStateChanged, signOut as authSignOut } from "firebase/auth";
-import { auth } from "@/firebase/firebase";
+import { auth, db } from '@/firbase/firebase'; //accessing the firebase database after authenticaiton
+import { doc, getDoc } from "firebase/firestore";
+
 
 // Create a new context using createContext
 const UserContext = createContext();
@@ -18,15 +20,19 @@ export const UserProvider = ({ children }) => {
   };
 
   // Function to handle changes in authentication state
-  const authStateChanged = (user) => {
+  const authStateChanged = async (user) => {
     setIsLoading(true);
     if (!user) {
       clear();
       return;
     }
-    setCurrentUser(user);
+
+    //accessing the user data from the firestore database
+    const userDoc = await getDoc(doc(db, 'users', user.uid));
+
+    //setting the data of the present user that we had extracted from firestore. 
+    setCurrentUser(userDoc.data()); //data() is used to remove additional methods and properties of the user object
     setIsLoading(false);
-    console.log(user);
   };
 
   // Function to sign out the user
