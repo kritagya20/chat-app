@@ -20,12 +20,18 @@ const f = size === "large" ? "text-2xl" : size === "xx-large" ? "text-4xl" : "te
   return (
     <div className={`${c} rounded-full flex items-center justify-center text-base shrink-0 relative`} style={{backgroundColor: user?.color}} onClick={onClick} >
       
-      {size === 'large' && (
-        <span className='w-[10px] h-[10px] bg-green-500 rounded-full absolute bottom-[2px] right-[2px]'></span>
+      {/* Code to display the active (green) icon when user is active */}
+      {user?.isOnline && (
+        <>
+          {size === 'large' && (
+            <span className='w-[10px] h-[10px] bg-green-500 rounded-full absolute bottom-[2px] right-[2px]'></span>
+          )}
+          {size === 'x-large' && (
+            <span className='w-[12px] h-[12px] bg-green-500 rounded-full absolute bottom-[3px] right-[3px]'></span>
+          )}
+        </>
       )}
-      {size === 'x-large' && (
-        <span className='w-[12px] h-[12px] bg-green-500 rounded-full absolute bottom-[3px] right-[3px]'></span>
-      )}
+
 
       {user?.photoURL ? ( 
         <div className={`${c} overflow-hidden rounded-full`}>

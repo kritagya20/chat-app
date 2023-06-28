@@ -14,6 +14,7 @@ import { doc, updateDoc } from 'firebase/firestore';
 import { db, auth, storage } from '@/firbase/firebase';
 import { updateProfile } from 'firebase/auth';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import UsersPopup from './popup/UsersPopup';
 
 
 
@@ -26,6 +27,10 @@ const LeftNav = () => {
 
   //state for storing the edited name by the user
   const [nameEdited, setNameEdited] = useState(false);
+
+  //state for showing and hiding the new user popup
+  const [usersPopup, setUsersPopup] = useState(false);
+
 
   //taking the value from the authenticated object for future updation
   const authUser = auth.currentUser;
@@ -279,7 +284,7 @@ const LeftNav = () => {
             size="x-large" 
             className={"bg-green-500 hover:bg-gray-600"} 
             icon={<FiPlus size={24}/>} 
-            onclick={()=>{}}
+            onClick={()=> setUsersPopup(!usersPopup)}
           />
         </span>
         <span> 
@@ -293,6 +298,7 @@ const LeftNav = () => {
         </span>
 
       </div>
+      {usersPopup && <UsersPopup onHide={()=> setUsersPopup(!usersPopup)} title="Find Users" />}
     </div>
   );
 }

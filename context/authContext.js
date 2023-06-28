@@ -1,7 +1,7 @@
 import { useState, useEffect, createContext, useContext } from "react";
 import { onAuthStateChanged, signOut as authSignOut } from "firebase/auth";
 import { auth, db } from '@/firbase/firebase'; //accessing the firebase database after authenticaiton
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 
 // Create a new context using createContext
@@ -14,9 +14,21 @@ export const UserProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true); // Loading state
 
   // Function to clear the current user state and set loading to false
-  const clear = () => {
-    setCurrentUser(null);
-    setIsLoading(false);
+  const clear = async () => {
+    try {
+      // changing the firebase object online status as false
+      if (currentUser) {
+        await updateDoc(doc(db, "users", currentUser.uid), {
+          isOnline: false
+        });
+      }
+      setCurrentUser(null);
+      setIsLoading(false);
+      
+    } catch (error) {
+      console.error(error);
+    }
+
   };
 
   // Function to handle changes in authentication state
@@ -25,6 +37,14 @@ export const UserProvider = ({ children }) => {
     if (!user) {
       clear();
       return;
+    }
+
+    //setting up the online status as true
+    const userDocExist = await getDoc(doc(db, "users", user.uid));
+    if(userDocExist.exists()) {
+      await updateDoc(doc(db, "users", user.uid), {
+        isOnline: true
+      });
     }
 
     //accessing the user data from the firestore database
