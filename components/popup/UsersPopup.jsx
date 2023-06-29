@@ -73,7 +73,7 @@ const UsersPopup = (props) => {
         //chat doc exists if user had a chat history
       }
 
-      dispatch({type: 'CHANGE_USER', payload: user});
+      dispatch({type: 'CHANGE_USER', payload: user}); //reducer function
       props.onHide();
     } catch (error) {
       console.error(error);

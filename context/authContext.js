@@ -68,7 +68,7 @@ export const UserProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-  // Return the UserContext.Provider component
+  // Using Context api to use the above code in any component or file
   return (
     <UserContext.Provider
       value={{

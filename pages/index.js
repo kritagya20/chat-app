@@ -12,6 +12,7 @@ const Home = () => {
   //destructuring the useAuth object that is defined and exported from authContext.js
   const { currentUser, isLoading } = useAuth();
 
+  //state to switch to login page when user has logged out
   useEffect(() => {
     if (!isLoading && !currentUser) {
       router.push("/login");
