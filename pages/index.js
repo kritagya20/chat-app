@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import Loader from "@/components/Loader";
 import LeftNav from "@/components/LeftNav";
 import Chats from "@/components/Chats";
+import Chat from "@/components/Chat";
+import { useChatContext } from "@/context/chatContext";
 
 
 const Home = () => {
@@ -11,6 +13,8 @@ const Home = () => {
 
   //destructuring the useAuth object that is defined and exported from authContext.js
   const { currentUser, isLoading } = useAuth();
+
+  const {data} = useChatContext();
 
   //state to switch to login page when user has logged out
   useEffect(() => {
@@ -34,7 +38,7 @@ const Home = () => {
           </div>
 
           {/* Chat */}
-          <div>Chat</div>
+          {data.user && <Chat />}
         </div>
       </div>
     </div>

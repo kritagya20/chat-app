@@ -1,12 +1,13 @@
 import React, { useReducer } from 'react';
 import { createContext, useContext, useState } from 'react';
 import { useAuth } from './authContext';
-import { BsNutFill } from 'react-icons/bs';
 
 
 const chatContext = createContext();
 export const ChatContextProvider = ({children}) => {
     const [users, setUsers] = useState(false);
+    const [chats, setChats] = useState([]);
+    const [selectedChat, setSelectedChat] = useState(null);
 
     const {currentUser} = useAuth();
 
@@ -22,9 +23,9 @@ export const ChatContextProvider = ({children}) => {
             case "CHANGE_USER":
                 return {
                     user: action.payload, // Store the user information of the new user selected for chat
-                    chatId: currentUser.uid > action.payload.uid
-                            ? currentUser.uid + action.payload.uid
-                            : action.payload.uid + currentUser.uid // Generate a unique chat ID for the chat
+                    chatId: currentUser?.uid > action?.payload?.uid
+                            ? currentUser?.uid + action?.payload?.uid
+                            : action?.payload?.uid + currentUser?.uid // Generate a unique chat ID for the chat
                 };
             default:
                 return state;
@@ -39,7 +40,9 @@ export const ChatContextProvider = ({children}) => {
             users,
             setUsers,
             data: state,
-            dispatch
+            dispatch,
+            chats, setChats,
+            selectedChat, setSelectedChat,
         }}>
             {children}
         </chatContext.Provider>
