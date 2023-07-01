@@ -1,24 +1,120 @@
 import { useChatContext } from '@/context/chatContext';
+import { Timestamp, arrayUnion, doc, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { db, storage } from '@/firbase/firebase';
 import React from 'react'
-  import {TbSend } from 'react-icons/tb'
+import {TbSend } from 'react-icons/tb'
+import { v4 as uuid} from 'uuid';
+import { useAuth } from '@/context/authContext';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 
 const Composebar = () => {
 
-  const { inputText, setInputText, setAttachment, attachmentPreview, setAttachmentPreview} = useChatContext();
+  const {currentUser} = useAuth();
+  const { inputText, setInputText, data, attachment, setAttachment, attachmentPreview, setAttachmentPreview} = useChatContext();
 
+  //function to store the input message typed by the user
   const handleTyping = (e) => {
     setInputText(e.target.value);
   }
 
+  //function to initiate the message sending
   const onkeyup = (e) => {
-    if(e.key === 'Enter' && inputText) {
+    if(e.key === 'Enter' && (inputText || attachment) ) {
       handleSend();
     }
   }
 
-  const handleSend = () => {
+  const handleSend = async () => {
 
+    //if case is for messages with attachments
+    if(attachment) {
+      // file uploading logic
+      const storageRef = ref(storage, uuid());
+      const uploadTask = uploadBytesResumable(storageRef, attachment);
+
+      // Register three observers:
+      // 1. 'state_changed' observer, called any time the state changes
+      // 2. Error observer, called on failure
+      // 3. Completion observer, called on successful completion
+      uploadTask.on('state_changed', 
+        (snapshot) => {
+          // Observe state change events such as progress, pause, and resume
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log('Upload is ' + progress + '% done');
+          switch (snapshot.state) {
+            case 'paused':
+              console.log('Upload is paused');
+              break;
+            case 'running':
+              console.log('Upload is running');
+              break;
+          }
+        }, 
+        (error) => {
+          // Handle unsuccessful uploads
+          console.error(error);
+        }, 
+        () => {
+          // Handle successful uploads on complete
+          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+          getDownloadURL(uploadTask.snapshot.ref).then(async(downloadURL) => {
+            //updating the chat object in firebase
+            await updateDoc(doc(db,"chats", data.chatId),{
+              //arrayUnion is a firebase function to push new data into our array
+              messages: arrayUnion( {
+                id: uuid(), //unique id for each message
+                text: inputText, //passing the input message
+                sender: currentUser.uid, //passing sender details using his unique id
+                date: Timestamp.now(), //exact time on which message was sent
+                read: false, //read reciept will we false by default
+                img: downloadURL
+              })
+            });
+          });
+        }
+      );
+    }
+    //else case is for normal text message
+    else {
+      //updating the chat object in firebase
+      await updateDoc(doc(db,"chats", data.chatId),{
+        //arrayUnion is a firebase function to push new data into our array
+        messages: arrayUnion( {
+          id: uuid(), //unique id for each message
+          text: inputText, //passing the input message
+          sender: currentUser.uid, //passing sender details using his unique id
+          date: Timestamp.now(), //exact time on which message was sent
+          read: false //read reciept will we false by default
+        })
+      });
+    }
+
+
+    let message = { text : inputText }
+    if(attachment) {
+      message.img = true;
+    }
+    //updating the doc of logged in user for displaying in the chats section
+    await updateDoc(doc(db,"userChats", currentUser.uid),{
+      //passing an new key value pair in the user chat object to update the last message in the chats listed section
+      [data.chatId + ".lastMessage"] : message,
+      [data.chatId + ".date"] : serverTimestamp()
+    });
+
+    //updating the doc of user to whom message is sent for displaying in the chats section
+    await updateDoc(doc(db,"userChats", data.user.uid),{
+      //passing an new key value pair in the user chat object to update the last message in the chats listed section
+      [data.chatId + ".lastMessage"] : message,
+      [data.chatId + ".date"] : serverTimestamp()
+    });
+
+    setInputText(''); //clearing the input message area after sending it to firebase
+    setAttachment(null); //clearing the attachment after message is sent
+    setAttachmentPreview(null); //removing attachment preview
   }
+
+
   return (
     <div className='flex items-center gap-2 grow'>
       <input type="text"

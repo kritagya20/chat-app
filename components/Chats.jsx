@@ -104,8 +104,8 @@ const Chats = () => {
           
           //firebase function to access time in readable format
           const timestamp = new Timestamp(
-            chat[1].date.seconds,
-            chat[1].date.nanoseconds,
+            chat[1]?.date?.seconds,
+            chat[1]?.date?.nanoseconds,
           );
 
           //firebase functon to convert time and date into dd mm yyyy format
