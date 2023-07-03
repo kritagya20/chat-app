@@ -34,9 +34,9 @@ const ChatFooter = () => {
     }
 
   return (
-    <div className='flex items-center bg-c1/[0.5] p-2 rounded-xl relative'>
+    <div className=' flex items-center gap-1  p-2 rounded-sm relative border-t border-white/[0.5]'>
         {attachmentPreview && 
-            <div className="absolute w-[120px] h-[120px] bottom-16 left-0 p-2 rounded-md  overscroll-x-contain bg-c1 ">
+            <div className="absolute w-[120px] h-[120px] bottom-16 left-0 p-2 rounded-md overscroll-x-contain bg-c1 ">
                 <div className="w-[100px] h-[100px] rounded-sm overflow-hidden">
                     <img src={attachmentPreview} />
                 </div>

@@ -13,6 +13,7 @@ import { auth, db } from "@/firbase/firebase"; //accessing the firebase database
 import { doc, setDoc } from "firebase/firestore"; // fuction for creating the object in the firebase database
 import { profileColors } from "@/utils/constants"; //set of different colors for user profiling
 import Loader from "@/components/Loader";
+import Developer from "@/components/Developer";
 
 //instance of the googleAuthProvider
 const gProvider = new GoogleAuthProvider();
@@ -83,23 +84,23 @@ const Signup = () => {
   return isLoading || (!isLoading && currentUser) ? (
     <Loader />
   ) : (
-    <div className="h-[100vh] flex justify-center items-center bg-c1">
+    <div className="min-h-[100vh] flex justify-center items-center bg-black">
       <div className="flex items-center flex-col">
         <div className="text-center">
-          <div className="text-4xl font-bold">Create New Account</div>
-          <div className="mt-3 text-c3">
-            Connect and chat with anyone, anywhere
+          <div className="text-3xl font-bold">Create New Account</div>
+          <div className="mt-1 text-c3">
+          Desktop Chat Application
           </div>
         </div>
 
         {/* Buttons for Google and Facebook Logins */}
-        <div className="flex items-center justify-center w-full mt-10 mb-5">
+        <div className="flex items-center justify-center w-full mt-5 mb-2">
           {/* Google Login Button */}
           <div
-            className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 w-1/2 h-14 rounded-md cursor-pointer p-[1px]"
+            className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 w-1/2 h-14 rounded-md cursor-pointer p-[2px]"
             onClick={signInWithGoogle}
           >
-            <div className="flex items-center justify-center gap-3 text-white font-semibold bg-c1 w-full h-full rounded-md">
+            <div className="flex items-center justify-center gap-3 text-black font-semibold w-full h-full rounded-md">
               <IoLogoGoogle size={24} />
               <span>Sign Up with Google</span>
             </div>
@@ -121,7 +122,7 @@ const Signup = () => {
           <input
             type="text"
             placeholder="Display Name"
-            className="w-full h-14 bg-c5 rounded-xl outline-none border-none px-5 text-c3"
+            className="w-full h-14 bg-c5 rounded-xl outline-none border-none px-5 text-whtie"
             autoComplete="off"
           />
 
@@ -129,7 +130,7 @@ const Signup = () => {
           <input
             type="email"
             placeholder="Email"
-            className="w-full h-14 bg-c5 rounded-xl outline-none border-none px-5 text-c3"
+            className="w-full h-14 bg-c5 rounded-xl outline-none border-none px-5 text-whtie"
             autoComplete="off"
           />
 
@@ -137,17 +138,17 @@ const Signup = () => {
           <input
             type="password"
             placeholder="Password"
-            className="w-full h-14 bg-c5 rounded-xl outline-none border-none px-5 text-c3"
+            className="w-full h-14 bg-c5 rounded-xl outline-none border-none px-5 text-whtie"
             autoComplete="off"
           />
 
           {/* Submit Button */}
-          <button className="mt-4 w-full h-14 rounded-xl outline-none text-base font-semibold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+          <button className="mt-4 w-full h-14 rounded-xl outline-none text-base font-semibold bg-blue-800">
             Sign Up
           </button>
         </form>
 
-        <div className="flex justify-center gap-1 text-c3 mt-5">
+        <div className="flex justify-center gap-2 text-sm text-c3 mt-5">
           <span> Already Have an Account? </span>
           <Link
             href="/login"
@@ -157,6 +158,7 @@ const Signup = () => {
           </Link>
         </div>
       </div>
+      <Developer left="true"/>
     </div>
   );
 };

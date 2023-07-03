@@ -92,6 +92,7 @@ const ChatMenu = ({setShowMenu, showMenu}) => {
               onClick={(e) => {
                 e.stopPropagation();
                 handleBlock(isUserBlocked ? 'unblock' : 'block');
+                setShowMenu(false);
               }}
             >
               {isUserBlocked ? 'unblock' : 'block user'}

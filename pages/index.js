@@ -26,12 +26,12 @@ const Home = () => {
   return !currentUser ? (
     <Loader />
   ) : (
-    <div className="primary flex h-[100vh]">
+    <div className=" flex h-[100vh] bg-black">
       <div className="flex w-full">
         <LeftNav />
-        <div className="flex bg-c2 grow">
+        <div className="flex grow">
           {/* Sidebar */}
-          <div className="w-[400px] p-2 overflow-auto scrollbar shrink-0 border-r border-white/[0.05] ">
+          <div className=" min-w-[320px] max-w-[400px] p-0 overflow-auto scrollbar shrink-0 border-r border-white/[0.05] ">
             <div className="flex flex-col h-full"> 
               <Chats />
             </div>

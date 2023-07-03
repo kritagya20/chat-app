@@ -181,7 +181,7 @@ const LeftNav = () => {
         <ToastMessage />
         <Icon 
           size="small" 
-          className="absolute top-0 right-5 hover:bg-c2"
+          className="absolute top-0 right-5 hover:scale-125 transition-all"
           icon={<IoClose size={20}/>} 
           onClick={() => setEditProfile(false)} 
         />
@@ -193,7 +193,7 @@ const LeftNav = () => {
           /> 
 
           {/* Displaying the change display Picture or update Display Picture with file uplaod feature */}
-          <div className='w-full h-full rounded-full bg-black/[0.5] absolute top-0 left-0 justify-center items-center hidden group-hover:flex'>
+          <div className='w-full h-full rounded-full bg-black absolute top-0 left-0 justify-center items-center hidden group-hover:flex'>
             <label htmlFor='fileUpload'>
               { currentUser.photoURL ? (<MdPhotoCamera size= {34} />) : (<MdAddAPhoto size= {34} />) }
             </label>
@@ -207,7 +207,7 @@ const LeftNav = () => {
 
           {/* Displaying Delete icon when display picture of the user is set */}
           { currentUser.photoURL && 
-            <div className='w-6 h-6 rounded-full bg-red-500 flex justify-center items-center absolute right-0 bottom-0' onClick={() => {
+            <div className='w-8 h-8 rounded-full bg-red-500 flex justify-center items-center absolute right-0 bottom-0' onClick={() => {
               handleUpdateProfile("photo-remove")
             }}>
               <MdDeleteForever size={14} />
@@ -267,11 +267,11 @@ const LeftNav = () => {
   }
 
   return (
-    <div className={`${editProfile ? "w-[350px]" : "w-[80px] items-center"} flex flex-col justify-between py-5 shrink-0 transition-all`}>
+    <div className={`${editProfile ? "w-[350px]" : "w-[80px] items-center"} border-r-[1px] border-white/50 flex flex-col justify-between py-5 shrink-0 transition-all `}>
       {editProfile ? editProfileContainer() : (
         <div className='relative group cursor-pointer' onClick={() => setEditProfile(true)}>
           <Avatar size="large" user={currentUser}/> 
-          <div className='w-full h-full rounded-full bg-black/[0.5] absolute top-0 left-0 justify-center items-center hidden group-hover:flex'>
+          <div className='w-full h-full rounded-full bg-black absolute top-0 left-0 justify-center items-center hidden group-hover:flex'>
             <BiEdit size={14} />
           </div>
         </div>
@@ -279,18 +279,18 @@ const LeftNav = () => {
 
 
       <div className={`flex gap-5 ${editProfile ? "ml-5" : "flex-col items-center"}`}>
-        <span> 
+        <span title='Add New User'> 
           <Icon 
             size="x-large" 
-            className={"bg-green-500 hover:bg-gray-600"} 
+            className={"bg-blue-600 hover:scale-125 transition-all"} 
             icon={<FiPlus size={24}/>} 
             onClick={()=> setUsersPopup(!usersPopup)}
           />
         </span>
-        <span> 
+        <span title='Logout'> 
           <Icon 
             size="x-large" 
-            className={" hover:bg-c2"} 
+            className={" hover:scale-125 transition-all"} 
             icon={<IoLogOutOutline 
             size={24}/>} 
             onClick={signOut} 

@@ -14,6 +14,7 @@ import DeleteMessagePopup from './popup/DeleteMessagePopup';
 import { db } from '@/firbase/firebase';
 import { DELETED_FOR_EVERYONE, DELETED_FOR_ME } from '@/utils/constants';
 import { global } from 'styled-jsx/css';
+import { RiArrowDropDownLine } from 'react-icons/ri';
 
 const Message = ({message}) => {
     const { currentUser } = useAuth();
@@ -82,7 +83,7 @@ const Message = ({message}) => {
 
 
   return (
-    <div className={`mb-5 max-w-[75%] ${self ? 'self-end' : ''}`}>
+    <div className={`mb-5 max-w-[70%] ${self ? 'self-end' : ''}`}>
         {showDeletePopup && (      
             <DeleteMessagePopup 
                 className='DeleteMessagegPopup'
@@ -99,7 +100,7 @@ const Message = ({message}) => {
             user = {self ? currentUser : users[data.user.uid]}
             className='mb-4'
         />
-        <div className={`group flex flex-col gap-4 p-4 rounded-3xl relative break-all ${self ? 'rounded-br-md p-msg-bg-1' : 'rounded-bl-md p-msg-bg-2'}`}>
+        <div className={`min-w-[50px] group flex flex-col gap-4 p-4 rounded-2xl relative break-all  ${self ? 'rounded-br-none p-msg-bg-1' : 'rounded-bl-none p-msg-bg-2'}`}>
             { message.text && (
                 <div
                     className='text-sm'
@@ -115,7 +116,7 @@ const Message = ({message}) => {
                         width={200}
                         height = {225}
                         alt ={message.text || ''}
-                        className='rounded-3xl max-w-[250px]'
+                        className='rounded-2xl max-w-[250px]'
                         onClick={()=>{setImageViewer({
                             messageId: message.id,
                             url: message.img
@@ -133,15 +134,15 @@ const Message = ({message}) => {
                 </>
             )}
             <div 
-                className={`flex items-end ${showmenu ? '' : 'hidden'} group-hover:flex absolute top-2 ${self ? 'left-2 bg-c5 ': 'right-2 bg-c1'}`}
+                className={`flex items-end ${showmenu ? '' : 'hidden'} group-hover:flex absolute top-2 ${self ? 'left-2 p-msg-bg-1 ': 'right-2 p-msg-bg-2'}`}
                 onClick={()=> setShowMenu(true)}
             >
                <Icon 
                 size='medium'
-                className='hover:bg-inherit rounded-none'
-                icon={<GoChevronDown 
+                className='hover:bg-inherit rounded-full'
+                icon={<RiArrowDropDownLine
                     size={16}
-                    className='text-c3'
+                    className='text-white/[0.75]'
                 />}
                /> 
                 {showmenu && (
@@ -156,7 +157,7 @@ const Message = ({message}) => {
             </div>
         </div>
       </div>
-      <div className={`flex items-end ${ self ? ' justify-start flex-row-reverse mr-12' : 'ml-12'}`}>
+      <div className={`flex items-end ${ self ? ' justify-start flex-row-reverse mr-10' : 'ml-10 '}`}>
         <div className="text-xs text-c3">
             {formatDate(date)}
         </div>

@@ -6,6 +6,9 @@ import { RiSearch2Line } from 'react-icons/ri';
 import Avatar from './Avatar';
 import { useAuth } from '@/context/authContext';
 import { formatDate } from '@/utils/helper';
+import { global } from 'styled-jsx/css';
+import Developer from './Developer';
+
 
 const Chats = () => {
 
@@ -137,7 +140,8 @@ const Chats = () => {
     });
   }
 
-  const handleSelect = (user, selectedChatId) => {
+
+  const handleSelect = async(user, selectedChatId) => {
     
     setSelectedChat(user);
     dispatch({type: 'CHANGE_USER', payload: user}); //reducer function
@@ -145,23 +149,26 @@ const Chats = () => {
     //clearing the unread messages batch when the user read the messages
     if(unreadMessages?.[selectedChatId]?.length > 0){
       readChat(selectedChatId);
-    }
+    }; 
+
   }
 
   return (
-    <div className='flex flex-col h-full'>
-      <div className=" shrink-0 sticky -top-[20px] z-10 flex justify-center w-full bg-c2 py-5">
-        <RiSearch2Line className='absolute top-9 left-12 text-c3' />
+    <div className='relative flex flex-col h-full border-r border-white/[0.25]'>
+      <div className=" sticky top-[0px] z-10 flex justify-center w-full py-2  border-b border-r border-white/[0.25]">
+        <span className='max-w-[300px] h-10 rounded-xl p-bg px-1  flex items-center justify-center'>
+        <RiSearch2Line className='min-w-[45px] text-c3' />
         <input 
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder='Search Username...'
-          className='w-[300px] h-12 rounded-xl bg-c1/[0.5] pr-5 pl-11 placeholder:text-c3 outline-none text-base'
+          className=' bg-transparent grow pr-5 pl-11 placeholder:text-c3 outline-none text-base'
         />
+        </span>
       </div>
 
-      <ul className='flex flex-col w-full my-5 gap-[2px]'>
+      <ul className='flex flex-col w-full mb-3 h-fit'>
         {/* displaying the chat list only when it exist else not displaying for new user who had no chat history */}
         {Object.keys(users || {}).length > 0 && filteredChats?.map((chat) => {
           
@@ -179,14 +186,17 @@ const Chats = () => {
           return (
             <li 
               key={chat[0]}
-              onClick={()=> handleSelect(user, chat[0])}
-              className={`h-[90px] flex items-center gap-4 rounded-3xl hover:bg-c1 p-4 cursor-pointer 
-              ${selectedChat?.uid === user?.uid? "bg-c1" : ""}`}
+              onClick={()=>{ 
+                handleSelect(user, chat[0]);
+                setSearch('');
+              }}
+              className={`h-[75px] flex items-center gap-4  p-2 cursor-pointer  hover:bg-gray-100/10
+              ${selectedChat?.uid === user?.uid? "p-bg border-y border-white/[0.75]" : "border-b border-white/[0.07]"}`}
             >
             <Avatar size='x-large' user={user} />
             <div className="flex flex-col gap-1 grow relative">
               <span className="flex text-base text-white item-center justify-between">
-                <div className='font-medium'>{user?.displayName}</div>
+                <div className='font-medium text-sm capitalize'>{user?.displayName}</div>
                 <div className='text-c3 text-xs'>{formatDate(date)}</div>
               </span>
               <p className='text-sm text-c3 line-clamp-1 break-all'>
@@ -204,6 +214,7 @@ const Chats = () => {
         })}
 
       </ul>
+      <Developer />
     </div>
   )
 }

@@ -14,18 +14,31 @@
   background-color: #131313;
 }
 
+.p-bg {
+  background-color: #1d1e20;;
+}
+
 .p-bg-light {
   background-color: #202c33;
 }
 
+.p-bg-dark {
+  background-color: #111B21;
+}
+
+
+
 .p-msg-bg-1 {
-  background-color: #005C4B;
+  background-color: #3797F0;
 }
 
 .p-msg-bg-2 {
-  background-color: #202C33;
+  background-color: #262626;
 }
 
+.xxs-size {
+  font-size: 0.75rem;
+}
 
 
 body {

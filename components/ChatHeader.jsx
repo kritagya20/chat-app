@@ -16,15 +16,15 @@ const ChatHeader = () => {
 
 
   return (
-    <div className='p-bg-light flex justify-between items-center py-2 px-1 border-b border-white/[0.05]'>
+    <div className='pl-4 flex justify-between items-center py-2 px-1 border-b border-white/[0.25]'>
         {user && (
             <div className="flex items-center gap-3">
             <Avatar size="large" user={user} />
             <div>
-                <div className="font-medium">
+                <div className=" font-normal capitalize">
                     {user.displayName}
                 </div>
-                <p className="text-sm text-c3">
+                <p className="text-xs capitalize text-c3">
                     {online ? "Online": "Offline"}
                 </p>
             </div>
@@ -38,7 +38,7 @@ const ChatHeader = () => {
                 onClick={()=> setShowMenu(true)}
                 icon={<IoEllipsisVerticalSharp 
                     size={20}
-                    className='text-c3'
+                    className='text-white'
                 />}
             />
             {showMenu && (<ChatMenu setShowMenu={setShowMenu} showMenu={showMenu}/>)}
