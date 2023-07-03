@@ -10,7 +10,7 @@ import {
 import { auth } from "@/firbase/firebase"; //authentication from firebase
 import { useAuth } from "@/context/authContext"; //Custom hook for accessing the UserContext
 import { useRouter } from "next/router"; //router for updating and locking the url
-import ToastMessage from "@/components/toastMessage"; //toast messages for specification of UI of messsages
+import ToastMessage from "@/components/ToastMessage"; //toast messages for specification of UI of messsages
 import { toast } from "react-toastify"; //toast messages for pop ups
 import Loader from "@/components/Loader";
 import Developer from "@/components/Developer";
