@@ -34,6 +34,9 @@ export const ChatContextProvider = ({children}) => {
                             ? currentUser?.uid + action?.payload?.uid
                             : action?.payload?.uid + currentUser?.uid // Generate a unique chat ID for the chat
                 };
+            case "EMPTY":
+                return INITIAL_STATE;
+
             default:
                 return state;
         }

@@ -13,12 +13,13 @@ import MessageMenu from './MessageMenu';
 import DeleteMessagePopup from './popup/DeleteMessagePopup';
 import { db } from '@/firbase/firebase';
 import { DELETED_FOR_EVERYONE, DELETED_FOR_ME } from '@/utils/constants';
+import { global } from 'styled-jsx/css';
 
 const Message = ({message}) => {
     const { currentUser } = useAuth();
     const { users, data, imageViewer, setImageViewer } = useChatContext();
 
-    const self = message.sender = currentUser.uid;
+    const self = message.sender === currentUser.uid;
 
     const [showmenu, setShowMenu] = useState(false);
     const [showDeletePopup, setShowDeletePopup] = useState(false);
@@ -92,13 +93,13 @@ const Message = ({message}) => {
                 deleteMessage= {deleteMessage}
             />
         )}
-      <div className={`flex items-end gap-3 mb-1 ${self ? 'justify-start flex-row-reverse ': ''}`}>
+      <div className={`flex items-end gap-3 mb-1 ${self ? 'justify-start flex-row-reverse': ''}`}>
         <Avatar 
             size='small'
             user = {self ? currentUser : users[data.user.uid]}
             className='mb-4'
         />
-        <div className={`group flex flex-col gap-4 p-4 rounded-3xl relative break-all ${self ? 'rounded-br-md bg-c5' : 'rounded-bl-md bg-c1'}`}>
+        <div className={`group flex flex-col gap-4 p-4 rounded-3xl relative break-all ${self ? 'rounded-br-md p-msg-bg-1' : 'rounded-bl-md p-msg-bg-2'}`}>
             { message.text && (
                 <div
                     className='text-sm'

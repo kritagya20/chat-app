@@ -3,7 +3,7 @@ import PopupWrapper from './PopupWrapper'
 import { useAuth } from '@/context/authContext'
 import { useChatContext } from '@/context/chatContext'
 import Avatar from '../Avatar'
-import { doc, getDoc, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore'
+import { deleteField, doc, getDoc, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore'
 import { db } from '@/firbase/firebase'
 import Search from '../Search'
 
@@ -21,7 +21,6 @@ const UsersPopup = (props) => {
       const res = await getDoc(doc(db, "chats", combinedId));
 
       if(!res.exists()) {
-        //chat doc doesnt exists if user starts new conversation
         
         //creating a chat document with an empty array of messages
         await setDoc(doc(db, "chats", combinedId), {
@@ -71,6 +70,11 @@ const UsersPopup = (props) => {
         
       } else {
         //chat doc exists if user had a chat history
+
+        //removing the chat deleted key value pair from the object to list into chat list
+        await updateDoc(doc(db, 'userChats', currentUser.uid), {
+          [combinedId + '.chatDeleted']: deleteField(),
+        })
       }
 
       dispatch({type: 'CHANGE_USER', payload: user}); //reducer function
@@ -87,7 +91,7 @@ const UsersPopup = (props) => {
         <div className='absolute w-full'>
           {users && Object.values(users).map((user) => {
             return (
-              <div className='flex items-center gap-4 rounded-xl hover:bg-c5 py-2 px-4 cursor-pointer' onClick={()=>handleSelect(user)}>
+              <div key={user.id} className='flex items-center gap-4 rounded-xl hover:bg-c5 py-2 px-4 cursor-pointer' onClick={()=>handleSelect(user)}>
               <Avatar size="large" user={user}/>
               <div className='flex flex-col gap-1 grow'>
                 <span className="text-base text-white flex items-center justify-between"> 

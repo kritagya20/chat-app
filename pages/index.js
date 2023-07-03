@@ -6,7 +6,7 @@ import LeftNav from "@/components/LeftNav";
 import Chats from "@/components/Chats";
 import Chat from "@/components/Chat";
 import { useChatContext } from "@/context/chatContext";
-
+import { global } from "styled-jsx/css";
 
 const Home = () => {
   const router = useRouter();
@@ -26,12 +26,12 @@ const Home = () => {
   return !currentUser ? (
     <Loader />
   ) : (
-    <div className="bg-c1 flex h-[100vh]">
+    <div className="primary flex h-[100vh]">
       <div className="flex w-full">
         <LeftNav />
         <div className="flex bg-c2 grow">
           {/* Sidebar */}
-          <div className="w-[400px] p-5 overflow-auto scrollbar shrink-0 border-r border-white/[0.05] ">
+          <div className="w-[400px] p-2 overflow-auto scrollbar shrink-0 border-r border-white/[0.05] ">
             <div className="flex flex-col h-full"> 
               <Chats />
             </div>

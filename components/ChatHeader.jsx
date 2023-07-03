@@ -4,6 +4,7 @@ import Avatar from './Avatar';
 import Icon from './Icon';
 import { IoEllipsisVerticalSharp } from 'react-icons/io5';
 import ChatMenu from './ChatMenu';
+import { global } from 'styled-jsx/css';
 
 
 const ChatHeader = () => {
@@ -15,7 +16,7 @@ const ChatHeader = () => {
 
 
   return (
-    <div className='flex justify-between items-center pb-5 border-b border-white/[0.05]'>
+    <div className='p-bg-light flex justify-between items-center py-2 px-1 border-b border-white/[0.05]'>
         {user && (
             <div className="flex items-center gap-3">
             <Avatar size="large" user={user} />

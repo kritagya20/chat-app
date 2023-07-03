@@ -10,6 +10,24 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.primary {
+  background-color: #131313;
+}
+
+.p-bg-light {
+  background-color: #202c33;
+}
+
+.p-msg-bg-1 {
+  background-color: #005C4B;
+}
+
+.p-msg-bg-2 {
+  background-color: #202C33;
+}
+
+
+
 body {
   color: white;
 }

@@ -1,5 +1,5 @@
 import { useChatContext } from '@/context/chatContext';
-import { Timestamp, arrayUnion, doc, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { Timestamp, arrayUnion, deleteField, doc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { db, storage } from '@/firbase/firebase';
 import React from 'react'
 import {TbSend } from 'react-icons/tb'
@@ -7,14 +7,35 @@ import { v4 as uuid} from 'uuid';
 import { useAuth } from '@/context/authContext';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 
+let typingTimeOut = null;
 const Composebar = () => {
 
   const {currentUser} = useAuth();
   const { inputText, setInputText, data, attachment, setAttachment, attachmentPreview, setAttachmentPreview} = useChatContext();
 
   //function to store the input message typed by the user
-  const handleTyping = (e) => {
+  const handleTyping = async(e) => {
     setInputText(e.target.value);
+
+    //appending another key value pair in the chats array of which user is typing
+    await updateDoc(doc(db, "chats", data.chatId), {
+      [`typing.${currentUser.uid}`] : true,
+    });
+
+    //clearing typing time out indicator before starting new timeout
+    if(typingTimeOut) {
+      clearTimeout(typingTimeOut);
+    }
+
+    typingTimeOut = setTimeout(async()=> {
+      //changing the typing value to false after the user stops typing
+      await updateDoc(doc(db, "chats", data.chatId), {
+        [`typing.${currentUser.uid}`] : false,
+      })
+
+      typingTimeOut = null;
+    }, 500)
+
   }
 
   //function to initiate the message sending
@@ -106,7 +127,8 @@ const Composebar = () => {
     await updateDoc(doc(db,"userChats", data.user.uid),{
       //passing an new key value pair in the user chat object to update the last message in the chats listed section
       [data.chatId + ".lastMessage"] : message,
-      [data.chatId + ".date"] : serverTimestamp()
+      [data.chatId + ".date"] : serverTimestamp(),
+      [data.chatId + ".chatDeleted"] : deleteField(),
     });
 
     setInputText(''); //clearing the input message area after sending it to firebase
@@ -125,7 +147,7 @@ const Composebar = () => {
         onKeyUp={onkeyup}
       />
       <button 
-        className={`h-10 w-10 rounded-xl shrink-0 flex justify-center items-center ${inputText.trim().length >0 ? 'bg-c4': '' }`}
+        className={`h-10 w-10 rounded-full shrink-0 flex justify-center items-center ${inputText.trim().length >0 ? 'bg-c4': '' }`}
         onClick={handleSend}  
       >
         <TbSend 

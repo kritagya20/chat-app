@@ -114,6 +114,10 @@ const Search = () => {
         
       } else {
         //chat doc exists if user had a chat history
+
+        await updateDoc(doc(db, 'userChats', currentUser.uid), {
+          [combinedId + '.chatDeleted']: deleteField(),
+        });
       }
       
       //setting the initial values of the states

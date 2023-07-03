@@ -8,7 +8,7 @@ import { useAuth } from '@/context/authContext';
 
 const Messages = () => {
   const {currentUser} = useAuth()
-  const {data} = useChatContext();
+  const {data, setIsTyping} = useChatContext();
 
   //state to store the messages extracted from firebase database
   const [messages, setMessages] = useState([]);
@@ -22,6 +22,7 @@ const Messages = () => {
     const unsub = onSnapshot(doc(db, "chats", data.chatId), (doc) => {
       if(doc.exists()) {
         setMessages(doc.data().messages); //storing the messages in local state
+        setIsTyping(doc.data()?.typing?.[data.user.uid] || false);
       }
 
       //setTimeout function execute the code in the lase by default
@@ -44,7 +45,7 @@ const Messages = () => {
         {messages?.filter((m)=> {
           //we are filtering out the deleted messages by the user
           //The code is filtering out deleted messages by the user. It checks each message (`m`) for the presence of `deletedInfo` object. If the `currentUser.uid` is not found in `deletedInfo` or if the message is not marked as deleted for the current user (`!== DELETED_FOR_ME`), and if it is not marked as deleted for everyone (`!m.deletedInfo?.deletedForEveryone?.[currentUser.uid]`), the message is included in the filtered result.
-          return m?.deletedInfo?.[currentUser.uid] !== DELETED_FOR_ME && !m.deletedInfo?.deletedForEveryone?.[currentUser.uid]
+          return m?.deletedInfo?.[currentUser.uid] !== DELETED_FOR_ME && !m.deletedInfo?.deletedForEveryone?.[currentUser.uid] && !m?.deleteChatInfo?.[currentUser.uid]
         })?.map((m) => {
           return <Message  message={m} key={m.id}/>
         })}
