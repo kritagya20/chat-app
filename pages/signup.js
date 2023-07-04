@@ -13,7 +13,6 @@ import { auth, db } from "@/firbase/firebase"; //accessing the firebase database
 import { doc, setDoc } from "firebase/firestore"; // fuction for creating the object in the firebase database
 import { profileColors } from "@/utils/constants"; //set of different colors for user profiling
 import Loader from "@/components/Loader";
-import Developer from "@/components/Developer";
 
 //instance of the googleAuthProvider
 const gProvider = new GoogleAuthProvider();
@@ -84,7 +83,7 @@ const Signup = () => {
   return isLoading || (!isLoading && currentUser) ? (
     <Loader />
   ) : (
-    <div className="min-h-[100vh] flex justify-center items-center bg-black">
+    <div className="py-4 min-h-[100vh] flex justify-center items-center bg-black">
       <div className="flex items-center flex-col">
         <div className="text-center">
           <div className="text-3xl font-bold">Create New Account</div>
@@ -97,7 +96,7 @@ const Signup = () => {
         <div className="flex items-center justify-center w-full mt-5 mb-2">
           {/* Google Login Button */}
           <div
-            className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 w-1/2 h-14 rounded-md cursor-pointer p-[2px]"
+            className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-14 rounded-md cursor-pointer px-4 py-[2px]"
             onClick={signInWithGoogle}
           >
             <div className="flex items-center justify-center gap-3 text-black font-semibold w-full h-full rounded-md">
@@ -116,7 +115,7 @@ const Signup = () => {
         {/* Form for email and password */}
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col items-center gap-3 w-[500px] mt-5"
+          className="flex flex-col items-center gap-3 min-w-[320px] w-[50vw] max-w-[500px] mt-5"
         >
           {/* Name-field */}
           <input
@@ -158,7 +157,6 @@ const Signup = () => {
           </Link>
         </div>
       </div>
-      <Developer left="true"/>
     </div>
   );
 };

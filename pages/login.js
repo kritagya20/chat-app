@@ -13,12 +13,12 @@ import { useRouter } from "next/router"; //router for updating and locking the u
 import ToastMessage from "@/components/ToastMessage"; //toast messages for specification of UI of messsages
 import { toast } from "react-toastify"; //toast messages for pop ups
 import Loader from "@/components/Loader";
-import Developer from "@/components/Developer";
 
 //instance of the googleAuthProvider
 const gProvider = new GoogleAuthProvider();
 
 const Login = () => {
+
   //router for locking the url
   const router = useRouter();
 
@@ -55,7 +55,7 @@ const Login = () => {
         },
         {
           // duration of toast message in miliseconds
-          autoClose: 5000,
+          autoClose: 1000,
         }
       );   
 
@@ -101,7 +101,7 @@ const Login = () => {
   return isLoading || (!isLoading && currentUser) ? (
     <Loader />
   ) : (
-    <div className="min-h-[100vh] flex justify-center items-center bg-black">
+    <div className="py-4 min-h-[100vh] flex justify-center items-center bg-black">
       <ToastMessage />
       <div className="flex items-center flex-col">
         <div className="text-center">
@@ -116,7 +116,7 @@ const Login = () => {
           {/* Google Login Button */}
           <div
             onClick={signInWithGoogle}
-            className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 w-1/2 h-14 rounded-md cursor-pointer p-[1px]"
+            className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 max-w-fit  h-14 rounded-md cursor-pointer px-4 py-[1px]"
           >
             <div className="flex items-center justify-center gap-3 text-black font-semibold bg-transparent w-full h-full rounded-md">
               <IoLogoGoogle size={24} />
@@ -134,7 +134,7 @@ const Login = () => {
         {/* Form for email and password */}
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col items-center gap-2 w-[500px] mt-5"
+          className="flex flex-col items-center gap-2 min-w-[320px] w-[50vw] max-w-[500px] mt-5"
         >
           {/* Email-field */}
           <input
@@ -178,7 +178,6 @@ const Login = () => {
           </Link>
         </div>
       </div>
-      < Developer left="true"/>
     </div>
   );
 };

@@ -36,7 +36,7 @@ const Chats = () => {
       const updatedUsers = {}; // creating an empty object that will store the data of the users available, fetched from firebase 
       snapshot.forEach((doc)=> {
         updatedUsers[doc.id] = doc.data(); //storing the the data of the users in key value pairs. key(id): value(all data of the specific user)
-        console.log(doc.data());
+        
       });
       setUsers(updatedUsers); //updating the user list
       if(!isBlockExecutedRef.current) {

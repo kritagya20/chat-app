@@ -35,7 +35,7 @@ const DeleteMessagePopup = (props) => {
           <button 
             onClick={()=> props.deleteMessage(DELETED_FOR_EVERYONE)}
             className=" uppercase  text-sm border-red-700 px-2 py-2 rounded-md text-red-500 border-[2px]  hover:bg-red-700 hover:text-white"
-          > Delete for EveryOne
+          > Delete for everyone
           </button>
 
           <button 

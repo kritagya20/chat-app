@@ -1,5 +1,5 @@
 import { useAuth } from '@/context/authContext';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Avatar from './Avatar';
 import { useChatContext } from '@/context/chatContext';
 import Image from 'next/image';
@@ -8,17 +8,25 @@ import { Timestamp, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { formatDate } from '@/utils/helper';
 import { wrapEmojisInHtmlTag } from '@/utils/helper';
 import Icon from './Icon';
-import {GoChevronDown} from 'react-icons/go';
 import MessageMenu from './MessageMenu';
 import DeleteMessagePopup from './popup/DeleteMessagePopup';
 import { db } from '@/firbase/firebase';
 import { DELETED_FOR_EVERYONE, DELETED_FOR_ME } from '@/utils/constants';
 import { global } from 'styled-jsx/css';
 import { RiArrowDropDownLine } from 'react-icons/ri';
+import { BsCheck2 } from 'react-icons/bs';
+
 
 const Message = ({message}) => {
     const { currentUser } = useAuth();
     const { users, data, imageViewer, setImageViewer } = useChatContext();
+    const [read, setRead] = useState(null); 
+
+    useEffect(()=> {
+        if(message.read === true) {
+            setRead(true);
+        }
+    }, [])
 
     const self = message.sender === currentUser.uid;
 
@@ -65,8 +73,10 @@ const Message = ({message}) => {
 
                     if(action === DELETED_FOR_EVERYONE) {
                         message.deletedInfo = {
-                            deletedForEveryOne: true
+                            deletedForEveryOne: true                            
                         }
+                        console.log('set')
+                        console.log(message)
                     }
                 }
 
@@ -157,10 +167,15 @@ const Message = ({message}) => {
             </div>
         </div>
       </div>
-      <div className={`flex items-end ${ self ? ' justify-start flex-row-reverse mr-10' : 'ml-10 '}`}>
+      <div className={`flex items-end gap-1 ${ self ? ' justify-start flex-row-reverse mr-10' : 'ml-10 '}`}>
         <div className="text-xs text-c3">
             {formatDate(date)}
         </div>
+        {self && !read && (
+            <div className="text-xs text-c3 mb-1" title='Message Sent'>
+               <BsCheck2 size={10} className='text-white'/>
+            </div>
+        )}
       </div>
     </div>
   )
