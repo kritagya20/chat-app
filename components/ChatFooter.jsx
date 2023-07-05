@@ -99,7 +99,7 @@ const ChatFooter = () => {
         )}
       </div>
       { isTyping && (
-            <div className="absolute -top-6 left-4 bg-c2 w-full h-6">
+            <div className="absolute -top-6 left-3 bg-black w-full h-6">
               <div className="flex gap-2 w-full h-full opacity-50 text-sm text-white">
                   {`${data?.user?.displayName} Is typing`}
                   <img src='/typing.svg' />
